@@ -272,6 +272,26 @@ def desaturate(rgb, amount):
     return tuple(map(int, map(desat, rgb)))
 
 
+
+def hex_to_rgb(hex_string_color):
+    """
+    Convert a color encoded in an hex string into
+     an rgb tuple.
+
+    Example:
+
+    >> hex_to_rgb("5b6eff")
+    (91, 110, 255)
+    """
+
+    hc = hex_string_color
+    if hc.startswith("#"):
+        hc = hc[1:]
+
+    channel_values = [hc[2*i:2*i+2] for i in range(len(hc)/2)]
+    return tuple([int(c, 16) for c in channel_values])
+
+
 class WaveformImage(object):
     """
     Given peaks and spectral centroids from the AudioProcessor, this class will construct
@@ -289,6 +309,20 @@ class WaveformImage(object):
                         (255,224,0),
                         (255,70,0),
                      ]
+
+            colors = [
+                        hex_to_rgb("556b2f"),
+                        hex_to_rgb("6b8e23"),
+                        hex_to_rgb("9acd32")
+            ]
+
+            background_color = (0, 0, 0)
+            colors = [
+                        hex_to_rgb("ffffff"),
+                        
+            ]
+
+
         elif palette == 2:
             background_color = (0,0,0)
             colors = [self.color_from_value(value/29.0) for value in range(0,30)]
@@ -322,6 +356,7 @@ class WaveformImage(object):
     def draw_peaks(self, x, peaks, spectral_centroid):
         """ draw 2 peaks at x using the spectral_centroid for color """
 
+        print spectral_centroid
         y1 = self.image_height * 0.5 - peaks[0] * (self.image_height - 4) * 0.5
         y2 = self.image_height * 0.5 - peaks[1] * (self.image_height - 4) * 0.5
         
